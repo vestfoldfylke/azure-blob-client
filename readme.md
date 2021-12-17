@@ -11,8 +11,8 @@ npm i @vtfk/azure-blob-client
 
 | Name | Example |
 |---|---|
-|AZURE-BLOB-CONNECTIONSTRING| DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net
-| AZURE-BLOB-CONTAINERNAME | Blobs |
+|AZURE_BLOB_CONNECTIONSTRING| DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net
+| AZURE_BLOB_CONTAINERNAME | Blobs |
 
 ## Import the package
 ``` javascript
