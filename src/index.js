@@ -6,9 +6,8 @@ const { BlobServiceClient, ContainerClient } = require('@azure/storage-blob');
 /*
   Declarations
 */
-const AzureBlobConnectionString = process.env['AZURE_BLOB_CONNECTIONSTRING'];
-const AzureBlobContainerName = process.env['AZURE_BLOB_CONTAINERNAME'];
-module.exports.unallowedPathCharacters = ['\\', ':', '*', '?', '"', '<', '>', '|'];
+const AzureBlobConnectionString = process.env.AZURE_BLOB_CONNECTIONSTRING;
+const AzureBlobContainerName = process.env.AZURE_BLOB_CONTAINERNAME;
 
 /*
   Private functions
