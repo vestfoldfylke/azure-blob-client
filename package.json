@@ -1,6 +1,6 @@
 {
   "name": "@vtfk/azure-blob-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A client for working with Azure storage blobs",
   "main": "index.js",
   "scripts": {
