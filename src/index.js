@@ -6,9 +6,10 @@ const { BlobServiceClient, ContainerClient } = require('@azure/storage-blob');
 /*
   Declarations
 */
-const AzureBlobConnectionString = process.env['AZURE_BLOB_CONNECTIONSTRING'];
-const AzureBlobContainerName = process.env['AZURE_BLOB_CONTAINERNAME'];
-module.exports.unallowedPathCharacters = ['\\', ':', '*', '?', '"', '<', '>', '|'];
+const AzureBlobConnectionString = process.env.AZURE_BLOB_CONNECTIONSTRING;
+const AzureBlobContainerName = process.env.AZURE_BLOB_CONTAINERNAME;
+const unallowedPathCharacters = ['\\', ':', '*', '?', '"', '<', '>', '|'];
+module.exports.unallowedPathCharacters = unallowedPathCharacters
 
 /*
   Private functions
@@ -121,7 +122,7 @@ async function list (path, options = {}) {
   options.prefix = path;
 
   // Create the ContainerClient
-  const client = this.createContainerClient(options);
+  const client = createContainerClient(options);
 
   // Get all blobs
   const blobs = [];
@@ -148,7 +149,7 @@ async function get (path, options = {}) {
   if (!path) throw new Error('Path cannot be empty');
 
   // Create the ContainerClient
-  const client = this.createContainerClient(options);
+  const client = createContainerClient(options);
 
   // Check if it exist as a blob, if not attempt to find folder
   const blobPaths = [];
@@ -156,7 +157,7 @@ async function get (path, options = {}) {
   if (await blobClient.exists()) {
     blobPaths.push(path);
   } else {
-    const blobs = await this.list(path);
+    const blobs = await list(path);
     if (blobs && Array.isArray(blobs) && blobs.length > 0) blobs.forEach((p) => blobPaths.push(p.path));
     else throw new Error(`The path ${path} does not exist as a folder or blob`);
   }
@@ -218,7 +219,7 @@ async function save (path, content, options = {}) {
   if (!content) throw new Error('Content must be specified');
 
   // Check that the path don't contain illegal characters
-  this.unallowedPathCharacters.forEach((char) => {
+  unallowedPathCharacters.forEach((char) => {
     if (path.includes(char)) throw new Error(`Path ${path} cannot contain character '${char}'`)
   })
 
@@ -232,7 +233,7 @@ async function save (path, content, options = {}) {
   }
 
   // Create the necessary clients
-  const client = this.createContainerClient(options);
+  const client = createContainerClient(options);
   const blockBlobClient = client.getBlockBlobClient(path);
 
   // Upload the blob
@@ -256,11 +257,11 @@ async function remove (path, options = {}) {
   if (!path) throw new Error('Path cannot be empty');
 
   // Get the list of all blobs on the given path
-  const blobs = await this.list(path, options);
+  const blobs = await list(path, options);
   if (!blobs || !Array.isArray(blobs) || blobs.length <= 0) return;
 
   // Create the client
-  const containerClient = this.createContainerClient(options);
+  const containerClient = createContainerClient(options);
 
   // Delete each blob
   const paths = [];
