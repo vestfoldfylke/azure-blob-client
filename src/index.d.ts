@@ -1,4 +1,4 @@
-export var unallowedPathCharacters: string[];
+export const unallowedPathCharacters: string[];
 /**
  * Creates a blobservice client, useful for lower level API access
  * Not necessary to use for simple CRUD operations
@@ -34,12 +34,12 @@ export function list(path: string | null, options?: {
     connectionString: string | null;
     containerName: string | null;
 }): Promise<{
-    name: any;
-    path: any;
-    blobType: any;
-    createdOn: any;
-    lastModified: any;
-    lastAccessedOn: any;
+    name: string;
+    path: string;
+    blobType: import("@azure/storage-blob").BlobType;
+    createdOn: Date;
+    lastModified: Date;
+    lastAccessedOn: Date;
 }[]>;
 /**
  * Gets a single file or all files under a folder
