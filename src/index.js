@@ -46,20 +46,18 @@ async function streamToBuffer (readableStream) {
  */
 function parseDataUrl (text) {
   if (!text) return;
+  if (typeof text !== 'string') return;
 
   const dataUrl = {};
 
   // If the content is formated as dataUrl, attempt to get mimeType and Encoding
-  if (text.startsWith('data:')) {
-    const split = text.substring(5).split(',');
-    if (split.length === 2) {
-      const parts = split[0].split(';');
-      if (parts.length === 2) {
-        dataUrl.type = parts[0];
-        dataUrl.encoding = parts[1];
-      }
-      dataUrl.data = split[1];
+  if (text.startsWith('data:') && text.includes(',')) {
+    const parts = text.substring(5, text.indexOf(',')).split(';');
+    if (parts.length === 2) {
+      dataUrl.type = parts[0];
+      dataUrl.encoding = parts[1];
     }
+    dataUrl.data = text.substring(text.indexOf(',') + 1)
   }
 
   // Return dataUrl if parsing was successful, if not just return undefined
@@ -189,7 +187,8 @@ async function get (path, options = {}) {
     }
 
     // Add the content
-    blob.data = data;
+    if (dataUrl && dataUrl.type === 'application/json') blob.data = JSON.parse(dataUrl.data)
+    else blob.data = data;
 
     // Add the blob to the array
     blobs.push(blob);
@@ -237,6 +236,9 @@ async function save (path, content, options = {}) {
   const blockBlobClient = client.getBlockBlobClient(path);
 
   // Upload the blob
+  if (typeof content === 'object') content = `data:application/json;utf-8,${JSON.stringify(content)}`
+  else content = content.toString()
+
   await blockBlobClient.upload(content, Buffer.byteLength(content), options);
 
   // Return the path of the created blob
