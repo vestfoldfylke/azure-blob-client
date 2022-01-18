@@ -29,7 +29,7 @@
     "dotenv": "^10.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.3",
+    "@types/jest": "27.0.3",
     "cross-env": "^7.0.3",
     "del-cli": "^4.0.1",
     "jest": "27.4.7",
