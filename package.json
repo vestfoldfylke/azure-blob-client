@@ -4,10 +4,8 @@
   "description": "A client for working with Azure storage blobs",
   "main": "index.js",
   "scripts": {
-    "clear_types": "del-cli \"**/*.d.ts\" \"!node_modules\"",
-    "tsc": "npm run clear_types && tsc",
     "dev": "cross-env NODE_ENV=development nodemon ./tests/dev.js",
-    "test": "standardx --fix && npm run tsc"
+    "test": "standardx --fix"
   },
   "repository": {
     "type": "git",
@@ -34,9 +32,7 @@
     "del-cli": "4.0.1",
     "jest": "27.4.7",
     "nodemon": "^2.0.21",
-    "standardx": "7.0.0",
-    "tsc": "2.0.4",
-    "typescript": "4.5.5"
+    "standardx": "7.0.0"
   },
   "standardx": {
     "env": [
