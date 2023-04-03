@@ -168,7 +168,7 @@ async function get (path, options = {}) {
     // Download the blob
     const downloadResponse = await blobClient.download();
     // Read the content stream
-    const data = (await streamToBuffer(downloadResponse.readableStreamBody)).toString();
+    const data = (await streamToBuffer(downloadResponse.readableStreamBody)).toString(options.encoding);
 
     // Create the blob
     const blob = {

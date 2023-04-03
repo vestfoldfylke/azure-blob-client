@@ -110,6 +110,24 @@ await blobClient.get('test/')
 ]
 ```
 
+#### Specify encoding of return value
+If you for example need `get` to return base64 instead of a bufferstring, you can specify encoding in the options-parameter.
+
+See valid encodings in [NodeJs official documentation](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) 
+```js
+// Gets a blob with name/path test.pdf and returns the content as a base64 string
+await blobClient.get('test.pdf', { encoding: 'base64' })
+
+// Yields
+{
+  name: 'test.pdf',
+  path: 'test.pdf',
+  extension: 'pdf',
+  data: 'JVBERi0xLjQNCiX5+pr==....'
+}
+
+```
+
 ### Remove
 Removes one or more blobs patching the provided path
 ``` javascript
