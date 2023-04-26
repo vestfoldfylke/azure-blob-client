@@ -252,6 +252,7 @@ module.exports.save = save;
  * @param {object} options
  * @param {string?} options.connectionString The Azure storage account connection string
  * @param {string?} options.containerName The name of the Azure storage account container name
+ * @param {string?} options.excludeBlobNames Blob names that will NOT be removed
  * @returns { Promise<String> | Promise<[String]>} The deleted paths
  */
 async function remove (path, options = {}) {
@@ -269,8 +270,9 @@ async function remove (path, options = {}) {
   const paths = [];
   for await (const blob of blobs) {
     if (!blob.path) continue;
-    paths.push(blob.path);
+    if (options.excludeBlobNames && Array.isArray(options.excludeBlobNames) && options.excludeBlobNames.includes(blob.name)) continue;
     await containerClient.getBlockBlobClient(blob.path).deleteIfExists(options);
+    paths.push(blob.path);
   }
 
   return paths;
