@@ -42,7 +42,7 @@ List one or more blobs matching the provided path
 await blobClient.list('test');
 
 // Gets all blobs in container
-await blobClient.list('*')
+await blobClient.list('*');
 
 // Yields
 [
