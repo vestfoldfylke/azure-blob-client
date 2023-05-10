@@ -41,7 +41,10 @@ List one or more blobs matching the provided path
 // Gets all blobs that has a path that starts with test
 await blobClient.list('test');
 
-// Yelds
+// Gets all blobs in container
+await blobClient.list('*')
+
+// Yields
 [
   {
     name: 'test.txt',

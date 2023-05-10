@@ -107,7 +107,7 @@ module.exports.createContainerClient = createContainerClient;
 
 /**
  * Lists all blobs for the provided path
- * @param {string?} path The path of the container
+ * @param {string?} path The path of the container. Use '*' for all blobs
  * @param {object} options
  * @param {string?} options.connectionString The Azure storage account connection string
  * @param {string?} options.containerName The name of the Azure storage account container name
@@ -117,6 +117,7 @@ async function list (path, options = {}) {
   if (!path) throw new Error('Path cannot be empty');
 
   // Set the path as the prefix
+  if (path === '*') path = ''
   options.prefix = path;
 
   // Create the ContainerClient
