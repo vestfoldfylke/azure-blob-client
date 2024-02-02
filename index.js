@@ -156,7 +156,7 @@ async function get (path, options = {}) {
   if (await blobClient.exists()) {
     blobPaths.push(path);
   } else {
-    const blobs = await list(path);
+    const blobs = await list(path, options);
     if (blobs && Array.isArray(blobs) && blobs.length > 0) blobs.forEach((p) => blobPaths.push(p.path));
     else throw new Error(`The path ${path} does not exist as a folder or blob`);
   }
