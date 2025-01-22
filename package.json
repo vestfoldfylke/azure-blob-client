@@ -27,11 +27,8 @@
     "dotenv": "^10.0.0"
   },
   "devDependencies": {
-    "@types/jest": "27.0.3",
-    "cross-env": "7.0.3",
-    "del-cli": "4.0.1",
-    "jest": "27.4.7",
-    "nodemon": "^2.0.21",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.9",
     "standardx": "7.0.0"
   },
   "standardx": {
