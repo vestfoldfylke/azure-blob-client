@@ -36,7 +36,13 @@ Example: img-tags in HTML can display them as pictures and browsers can easily h
 If stored in dataUrl format the MIME type and encoding will be parsed when retreiving the data.
 
 ### List
-List one or more blobs matching the provided path
+List one or more blobs matching the provided path. The parameter path works as startsWith, so if you e.g. want to list
+blobs inside a folder add a `/` at the end of the path
+
+```javascript
+await blobClient.list(`${directoryName}/`)
+```
+
 ``` javascript
 // Gets all blobs that has a path that starts with test
 await blobClient.list('test');
@@ -122,7 +128,7 @@ See valid encodings in [NodeJs official documentation](https://nodejs.org/api/bu
 await blobClient.get('test.pdf', { encoding: 'base64' })
 
 // Yields
-{
+const result = {
   name: 'test.pdf',
   path: 'test.pdf',
   extension: 'pdf',
