@@ -2,12 +2,29 @@
   "name": "@vestfoldfylke/azure-blob-client",
   "version": "0.1.7",
   "description": "A client for working with Azure storage blobs",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
-  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.cjs",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
+    "build": "tsc && rollup -c",
     "dev": "NODE_ENV=development node ./tests/dev.js",
-    "test": "biome check",
-    "lint:fix": "biome check --write"
+    "lint:fix": "biome check --write",
+    "test": "biome check"
   },
   "repository": {
     "type": "git",
@@ -29,10 +46,13 @@
   },
   "homepage": "https://github.com/vestfoldfylke/azure-blob-client#readme",
   "dependencies": {
-    "@azure/storage-blob": "^12.8.0",
-    "dotenv": "^10.0.0"
+    "@azure/storage-blob": "^12.30.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.11"
+    "@biomejs/biome": "2.3.11",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "rollup-plugin-dts": "^6.3.0",
+    "rollup-plugin-esbuild": "^6.2.1"
   }
 }
