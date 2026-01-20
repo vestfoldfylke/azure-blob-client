@@ -1,42 +1,38 @@
 {
-  "name": "@vtfk/azure-blob-client",
+  "name": "@vestfoldfylke/azure-blob-client",
   "version": "0.1.7",
   "description": "A client for working with Azure storage blobs",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./tests/dev.js",
-    "test": "standardx --fix"
+    "dev": "NODE_ENV=development node ./tests/dev.js",
+    "test": "biome check",
+    "lint:fix": "biome check --write"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vtfk/azure-blob-client.git"
+    "url": "git+https://github.com/vestfoldfylke/azure-blob-client.git"
   },
   "keywords": [
     "Azure",
     "blob",
     "blobs"
   ],
-  "author": "Karl-Einar Bergstrøm [VTFK]",
+  "author": {
+    "name": "Rune Moskvil Lyngås",
+    "email": "rune.moskvil.lyngas@vestfoldfylke.no",
+    "url": "https://github.com/runely"
+  },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vtfk/azure-blob-client/issues"
+    "url": "https://github.com/vestfoldfylke/azure-blob-client/issues"
   },
-  "homepage": "https://github.com/vtfk/azure-blob-client#readme",
+  "homepage": "https://github.com/vestfoldfylke/azure-blob-client#readme",
   "dependencies": {
     "@azure/storage-blob": "^12.8.0",
     "dotenv": "^10.0.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "nodemon": "^3.1.9",
-    "standardx": "7.0.0"
-  },
-  "standardx": {
-    "env": [
-      "jest"
-    ],
-    "ignore": [
-      "tests/dev.js"
-    ]
+    "@biomejs/biome": "2.3.11"
   }
 }

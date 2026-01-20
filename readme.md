@@ -1,24 +1,30 @@
 # azure-blob-client
-An convenient library for working with Azure storage blobs
+A convenient library for working with Azure storage blobs
 
 ## Get started
 1. Install
-``` javascript
-npm i @vtfk/azure-blob-client
-```
+    ``` bash
+    npm i @vestfoldfylke/azure-blob-client
+    ```
 2. Setup environment variables **(Not required)**
 
+| Name                        | Example                                                                                                            |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------|
+| AZURE_BLOB_CONNECTIONSTRING | DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net |
+| AZURE_BLOB_CONTAINERNAME    | Blobs                                                                                                              |
 
-| Name | Example |
-|---|---|
-|AZURE_BLOB_CONNECTIONSTRING| DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net
-| AZURE_BLOB_CONTAINERNAME | Blobs |
+## Usage
+``` TypeScript
+import { Client } from "@vestfoldfylke/azure-blob-client";
 
-## Import the package
-``` javascript
-const blobClient = require('@vtfk/azure-blob-client');
-// OR just require the functions you need with destructoring
-const { list, get, create, remove } = require('@vtfk/azure-blob-client'); 
+// create the blob client based on env-variables
+const blobClient: BlobClient = new Client();
+
+// create the blob client based on provided connection string and container name
+const blobClient: BlobClient = new Client({
+  connectionString: 'Azure storage account connection string',
+  containerName: 'Azure storage account container name '
+});
 ```
 
 ## Functions & examples
