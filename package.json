@@ -21,8 +21,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "tsc && rollup -c",
-    "dev": "NODE_ENV=development node ./tests/dev.js",
+    "build": "npm run test && tsc && rollup -c",
+    "dev": "npm run build && node --env-file=.env.development ./dist/cjs/tests/dev.cjs",
     "lint:fix": "biome check --write",
     "test": "biome check"
   },
@@ -52,6 +52,7 @@
     "@biomejs/biome": "2.3.11",
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/node": "^25.0.9",
     "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-esbuild": "^6.2.1"
   }

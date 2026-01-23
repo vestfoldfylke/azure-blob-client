@@ -109,3 +109,9 @@ dist
 
 # tull
 tull.js
+
+# Azurite artifacts
+__blobstorage__
+__queuestorage__
+__azurite_db*__.json
+AzuriteConfig
