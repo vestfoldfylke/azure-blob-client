@@ -116,3 +116,6 @@ __blobstorage__
 __queuestorage__
 __azurite_db*__.json
 AzuriteConfig
+
+# OSX generated files
+.DS_Store
