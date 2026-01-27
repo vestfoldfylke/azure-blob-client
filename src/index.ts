@@ -31,9 +31,9 @@ import type { BlobStorageClientOptions, BlobStorageDataUrl, BlobStorageItem, IBl
  * ```
  */
 export class BlobStorageClient implements IBlobStorageClient {
-  private readonly _containerClient: ContainerClient;
+  public readonly UNALLOWED_PATH_CHARACTERS: string[] = ["\\", ":", "*", "?", '"', "<", ">", "|"];
 
-  private readonly UNALLOWED_PATH_CHARACTERS: string[] = ["\\", ":", "*", "?", '"', "<", ">", "|"];
+  private readonly _containerClient: ContainerClient;
 
   constructor(options?: BlobStorageClientOptions) {
     const connectionString: string | undefined = options?.connectionString || process.env["AZURE_BLOB_CONNECTION_STRING"];
@@ -143,7 +143,7 @@ export class BlobStorageClient implements IBlobStorageClient {
    * @param destinationPath - The destination path where to move the blob.
    * @param [saveOptions] - Options for saving the blob at the destination.
    * @param [removeOptions] - Options for removing the blob at the source.
-   * @returns The path of the moved blob.
+   * @returns The path to the moved blob.
    */
   public async move(
     sourcePath: string,

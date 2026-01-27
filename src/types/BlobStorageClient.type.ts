@@ -32,6 +32,8 @@ export type BlobStorageItem = Omit<BlobItem, "name" | "deleted" | "properties" |
 };
 
 export interface IBlobStorageClient {
+  readonly UNALLOWED_PATH_CHARACTERS: string[];
+
   get: (path: string, encoding?: BufferEncoding) => Promise<BlobStorageItem[]>;
 
   list: (path: string, options?: ContainerListBlobsOptions) => Promise<BlobStorageItem[]>;
