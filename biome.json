@@ -13,14 +13,14 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "expand": "auto",
-    "includes": ["**", "!dist", "!node_modules", "!!package.json"]
+    "includes": ["**", "!build", "!dist", "!node_modules", "!!package.json"]
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true
     },
-    "includes": ["**", "!!rollup.config.mjs", "!dist", "!node_modules"]
+    "includes": ["**", "!build", "!dist", "!node_modules"]
   },
   "javascript": {
     "formatter": {
@@ -32,7 +32,7 @@
   },
   "overrides": [
     {
-      "includes": ["src/**/*.ts"],
+      "includes": ["src/**/*.ts", "tests/**/*.ts"],
       "javascript": {
         "globals": []
       },

@@ -8,48 +8,49 @@ A convenient library for working with Azure storage blobs
     ```
 2. Setup environment variables **(Not required)**
 
-| Name                        | Example                                                                                                            |
-|-----------------------------|--------------------------------------------------------------------------------------------------------------------|
-| AZURE_BLOB_CONNECTIONSTRING | DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net |
-| AZURE_BLOB_CONTAINERNAME    | Blobs                                                                                                              |
+| Name                         | Example                                                                                                            |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| AZURE_BLOB_CONNECTION_STRING | DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net |
+| AZURE_BLOB_CONTAINER_NAME    | Blobs                                                                                                              |
 
 ## Usage
 ``` TypeScript
-import { Client } from "@vestfoldfylke/azure-blob-client";
+import { BlobStorageClient } from "@vestfoldfylke/azure-blob-client";
 
-// create the blob client based on env-variables
-const blobClient: BlobClient = new Client();
-
-// create the blob client based on provided connection string and container name
-const blobClient: BlobClient = new Client({
-  connectionString: 'Azure storage account connection string',
-  containerName: 'Azure storage account container name '
+// Create a new BlobStorageClient instance where connection string and container name are provided via environment variables explicitly
+const blobStorageClient = new BlobStorageClient({
+  connectionString: "<your-connection-string>",
+  containerName: "<your-container-name>"
 });
+
+// Create a new BlobStorageClient instance where connection string and container name are provided via environment variables implicitly
+// NOTE: Make sure the AZURE_BLOB_CONNECTION_STRING and AZURE_BLOB_CONTAINER_NAME environment variables are set
+const blobStorageClient = new BlobStorageClient();
 ```
 
 ## Functions & examples
 ### Save
 Saves content to a given path
-``` javascript
+``` TypeScript
 // Create a blob with path test.txt
 await blobClient.save('test.txt', 'testdata');
 await blobClient.save('test/test2.txt', 'data:plain/text;utf-8,test2');
 await blobClient.save('test/folder1/test3.txt', 'data:plain/text;utf-8,test3');
 ```
-We recommend using the dataUrl-format for storing data as it makes it easier to work with after it is retreived.
+We recommend using the dataUrl-format for storing data as it makes it easier to work with after it is retrieved.
 Example: img-tags in HTML can display them as pictures and browsers can easily handle and download them.
 
-If stored in dataUrl format the MIME type and encoding will be parsed when retreiving the data.
+If stored in dataUrl format the MIME type and encoding will be parsed when retrieving the data.
 
 ### List
 List one or more blobs matching the provided path. The parameter path works as startsWith, so if you e.g. want to list
 blobs inside a folder add a `/` at the end of the path
 
-```javascript
+```TypeScript
 await blobClient.list(`${directoryName}/`)
 ```
 
-``` javascript
+``` TypeScript
 // Gets all blobs that has a path that starts with test
 await blobClient.list('test');
 
@@ -87,7 +88,7 @@ await blobClient.list('*');
 
 ### Get
 Get one or more blobs with its data
-``` javascript
+``` TypeScript
 // Gets a blob with name/path test.txt
 await blobClient.get('test.txt')
 
@@ -100,7 +101,7 @@ await blobClient.get('test.txt')
 }
 
 ```
-``` javascript
+``` TypeScript
 // Gets a blob with name/path test.txt
 await blobClient.get('test/')
 
@@ -126,12 +127,12 @@ await blobClient.get('test/')
 ```
 
 #### Specify encoding of return value
-If you for example need `get` to return base64 instead of a bufferstring, you can specify encoding in the options-parameter.
+If you for example need `get` to return base64 instead of a buffer string, you can specify encoding.
 
 See valid encodings in [NodeJs official documentation](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) 
-```js
+```TypeScript
 // Gets a blob with name/path test.pdf and returns the content as a base64 string
-await blobClient.get('test.pdf', { encoding: 'base64' })
+await blobClient.get('test.pdf', 'base64')
 
 // Yields
 const result = {
@@ -144,44 +145,33 @@ const result = {
 ```
 
 ### Remove
-Removes one or more blobs patching the provided path
-``` javascript
+Removes one or more blobs matching the provided path
+``` TypeScript
 // Removes the blob with path test.txt
 await blobClient.remove('test.txt');
 
 // Yields
 [ 'test.txt' ]
-```
-``` javascript
+
 // Removes all blobs starting with test
 await blobClient.remove('test');
 
 // Yields
 [ 'test/test2.txt', 'test/folder1/test3.txt' ]
+
+// Removes all blobs starting with test except test3.txt
+await blobClient.remove('test', ['test3.txt']);
+
+// Yields
+[ 'test/test2.txt' ]
 ```
 
-### createBlobServiceClient
-Creates and returns a BlobServiceClient for working with lower-level API
-``` javascript
-// Create the client
-const client = await blobClient.createBlobServiceClient();
-```
+### BlobServiceClient
+If you need to work with lower-level API's you can create a BlobServiceClient and/or ContainerClient yourself.
+``` TypeScript
+// Create the BlobServiceClient
+const blobServiceClient: BlobServiceClient = new BlobServiceClient(...);
 
-### createContainerClient
-Creates and returns a ContainerClient for working with lower-level API
-``` javascript
-// Create the client
-const client = await blobClient.createContainerClient();
-```
-
-### Other
-All functions takes in an optional options object
-``` javascript
-// Create the options object
-const options = {
-  connectionString: 'Azure storage account connection string',
-  containerName: 'Azure storage account container name '
-}
-// Get blobs with provided options
-await blobClient.get('test.txt', options);
+// Create the ContainerClient
+const containerClient: ContainerClient = new ContainerClient(...);
 ```
