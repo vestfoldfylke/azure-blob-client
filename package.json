@@ -1,42 +1,49 @@
 {
-  "name": "@vtfk/azure-blob-client",
-  "version": "0.1.7",
+  "name": "@vestfoldfylke/azure-blob-client",
+  "version": "1.0.0",
   "description": "A client for working with Azure storage blobs",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./tests/dev.js",
-    "test": "standardx --fix"
+    "build": "npm run test && tsc",
+    "dev": "npm run build && node --env-file=.env.development ./build/tests/dev.js",
+    "lint:fix": "biome check --write",
+    "pack": "npm run test && rm -rf dist && rm -f vestfoldfylke-azure-blob-client-*.tgz && npm run build && npm pack",
+    "test": "biome check && tsc -p tsconfig_tests.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vtfk/azure-blob-client.git"
+    "url": "git+https://github.com/vestfoldfylke/azure-blob-client.git"
   },
   "keywords": [
     "Azure",
     "blob",
     "blobs"
   ],
-  "author": "Karl-Einar Bergstrøm [VTFK]",
+  "author": {
+    "name": "Rune Moskvil Lyngås",
+    "email": "rune.moskvil.lyngas@vestfoldfylke.no",
+    "url": "https://github.com/runely"
+  },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vtfk/azure-blob-client/issues"
+    "url": "https://github.com/vestfoldfylke/azure-blob-client/issues"
   },
-  "homepage": "https://github.com/vtfk/azure-blob-client#readme",
+  "homepage": "https://github.com/vestfoldfylke/azure-blob-client#readme",
   "dependencies": {
-    "@azure/storage-blob": "^12.8.0",
-    "dotenv": "^10.0.0"
+    "@azure/storage-blob": "^12.30.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "nodemon": "^3.1.9",
-    "standardx": "7.0.0"
-  },
-  "standardx": {
-    "env": [
-      "jest"
-    ],
-    "ignore": [
-      "tests/dev.js"
-    ]
+    "@biomejs/biome": "2.3.13",
+    "@types/node": "^25.0.10",
+    "typescript": "^5.9.3"
   }
 }

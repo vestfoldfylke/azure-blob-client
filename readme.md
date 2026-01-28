@@ -1,89 +1,245 @@
 # azure-blob-client
-An convenient library for working with Azure storage blobs
+A convenient library for working with Azure storage blobs
 
 ## Get started
 1. Install
-``` javascript
-npm i @vtfk/azure-blob-client
-```
+    ``` bash
+    npm i @vestfoldfylke/azure-blob-client
+    ```
 2. Setup environment variables **(Not required)**
 
+| Name                         | Example                                                                                                            |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| AZURE_BLOB_CONNECTION_STRING | DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net |
+| AZURE_BLOB_CONTAINER_NAME    | Blobs                                                                                                              |
 
-| Name | Example |
-|---|---|
-|AZURE_BLOB_CONNECTIONSTRING| DefaultEndpointsProtocol=https;AccountName=\[AccountName];AccountKey=\[AccountKey];EndpointSuffix=core.windows.net
-| AZURE_BLOB_CONTAINERNAME | Blobs |
+## Usage
+``` TypeScript
+import { BlobStorageClient } from "@vestfoldfylke/azure-blob-client";
 
-## Import the package
-``` javascript
-const blobClient = require('@vtfk/azure-blob-client');
-// OR just require the functions you need with destructoring
-const { list, get, create, remove } = require('@vtfk/azure-blob-client'); 
+// Create a new BlobStorageClient instance where connection string and container name are provided via environment variables explicitly
+const blobStorageClient = new BlobStorageClient({
+  connectionString: "<your-connection-string>",
+  containerName: "<your-container-name>"
+});
+
+// Create a new BlobStorageClient instance where connection string and container name are provided via environment variables implicitly
+// NOTE: Make sure the AZURE_BLOB_CONNECTION_STRING and AZURE_BLOB_CONTAINER_NAME environment variables are set
+const blobStorageClient = new BlobStorageClient();
 ```
 
 ## Functions & examples
+
 ### Save
+
 Saves content to a given path
-``` javascript
+
+``` TypeScript
 // Create a blob with path test.txt
-await blobClient.save('test.txt', 'testdata');
-await blobClient.save('test/test2.txt', 'data:plain/text;utf-8,test2');
-await blobClient.save('test/folder1/test3.txt', 'data:plain/text;utf-8,test3');
+await blobStorageClient.save('test.txt', 'testdata');
+await blobStorageClient.save('test/test2.txt', 'data:plain/text;utf-8,test2');
+await blobStorageClient.save('test/folder1/test3.txt', 'data:plain/text;utf-8,test3');
 ```
-We recommend using the dataUrl-format for storing data as it makes it easier to work with after it is retreived.
+
+We recommend using the dataUrl-format for storing data as it makes it easier to work with after it is retrieved.
 Example: img-tags in HTML can display them as pictures and browsers can easily handle and download them.
 
-If stored in dataUrl format the MIME type and encoding will be parsed when retreiving the data.
+If stored in dataUrl format the MIME type and encoding will be parsed when retrieving the data.
 
 ### List
+
 List one or more blobs matching the provided path. The parameter path works as startsWith, so if you e.g. want to list
 blobs inside a folder add a `/` at the end of the path
 
-```javascript
-await blobClient.list(`${directoryName}/`)
-```
+```TypeScript
+await blobStorageClient.list(`${directoryName}/`)
 
-``` javascript
 // Gets all blobs that has a path that starts with test
-await blobClient.list('test');
+await blobStorageClient.list('test');
 
 // Gets all blobs in container
-await blobClient.list('*');
+await blobStorageClient.list('*');
 
 // Yields
 [
-  {
-    name: 'test.txt',
-    path: 'test.txt',
-    blobType: 'BlockBlob',
-    createdOn: 2021-12-17T13:42:43.000Z,
-    lastModified: 2021-12-17T13:46:18.000Z,
-    lastAccessedOn: undefined
-  },
-  {
-    name: 'test2.txt',
-    path: 'test/test2.txt',
-    blobType: 'BlockBlob',
-    createdOn: 2021-12-17T13:42:43.000Z,
-    lastModified: 2021-12-17T13:46:18.000Z,
-    lastAccessedOn: undefined
-  },
-  {
-    name: 'test3.txt',,
-    path: 'test/folder1/test3.txt',
-    blobType: 'BlockBlob',
-    createdOn: 2021-12-17T13:42:43.000Z,
-    lastModified: 2021-12-17T13:46:18.000Z,
-    lastAccessedOn: undefined
-  }
+   {
+      "name": "test.txt",
+      "deleted": undefined,
+      "snapshot": undefined,
+      "versionId": undefined,
+      "isCurrentVersion": undefined,
+      "properties": {
+         "createdOn": "2026-01-27T17:30:22.000Z",
+         "lastModified": "2026-01-27T17:30:22.000Z",
+         "etag": "0x1B91582CD8B72C0",
+         "contentLength": 54,
+         "contentType": "application/octet-stream",
+         "contentEncoding": undefined,
+         "contentLanguage": undefined,
+         "contentMD5": "<Buffer 3b 43 94 49 9c 1c 6a c5 2d 27 da 62 da 11 03 0d>",
+         "contentDisposition": undefined,
+         "cacheControl": undefined,
+         "blobSequenceNumber": undefined,
+         "blobType": "BlockBlob",
+         "leaseStatus": "unlocked",
+         "leaseState": "available",
+         "leaseDuration": undefined,
+         "copyId": undefined,
+         "copyStatus": undefined,
+         "copySource": undefined,
+         "copyProgress": undefined,
+         "copyCompletedOn": undefined,
+         "copyStatusDescription": undefined,
+         "serverEncrypted": true,
+         "incrementalCopy": undefined,
+         "destinationSnapshot": undefined,
+         "deletedOn": undefined,
+         "remainingRetentionDays": undefined,
+         "accessTier": "Hot",
+         "accessTierInferred": true,
+         "archiveStatus": undefined,
+         "customerProvidedKeySha256": undefined,
+         "encryptionScope": undefined,
+         "accessTierChangedOn": "2026-01-27T17:30:22.000Z",
+         "tagCount": undefined,
+         "expiresOn": undefined,
+         "isSealed": undefined,
+         "rehydratePriority": undefined,
+         "lastAccessedOn": undefined,
+         "immutabilityPolicyExpiresOn": undefined,
+         "immutabilityPolicyMode": undefined,
+         "legalHold": undefined
+      },
+      "metadata": undefined,
+      "blobTags": undefined,
+      "objectReplicationMetadata": undefined,
+      "hasVersionsOnly": undefined,
+      "tags": undefined,
+      "objectReplicationSourceProperties": undefined,
+      "path": "test.txt"
+   },
+   {
+      "name": "test2.txt",
+      "deleted": undefined,
+      "snapshot": undefined,
+      "versionId": undefined,
+      "isCurrentVersion": undefined,
+      "properties": {
+         "createdOn": "2026-01-27T17:30:22.000Z",
+         "lastModified": "2026-01-27T17:30:22.000Z",
+         "etag": "0x22AF2A6A236E8C0",
+         "contentLength": 8,
+         "contentType": "application/octet-stream",
+         "contentEncoding": undefined,
+         "contentLanguage": undefined,
+         "contentMD5": "<Buffer ef 65 4c 40 ab 4f 17 47 fc 69 99 15 d4 f7 09 02>",
+         "contentDisposition": undefined,
+         "cacheControl": undefined,
+         "blobSequenceNumber": undefined,
+         "blobType": "BlockBlob",
+         "leaseStatus": "unlocked",
+         "leaseState": "available",
+         "leaseDuration": undefined,
+         "copyId": undefined,
+         "copyStatus": undefined,
+         "copySource": undefined,
+         "copyProgress": undefined,
+         "copyCompletedOn": undefined,
+         "copyStatusDescription": undefined,
+         "serverEncrypted": true,
+         "incrementalCopy": undefined,
+         "destinationSnapshot": undefined,
+         "deletedOn": undefined,
+         "remainingRetentionDays": undefined,
+         "accessTier": "Hot",
+         "accessTierInferred": true,
+         "archiveStatus": undefined,
+         "customerProvidedKeySha256": undefined,
+         "encryptionScope": undefined,
+         "accessTierChangedOn": "2026-01-27T17:30:22.000Z",
+         "tagCount": undefined,
+         "expiresOn": undefined,
+         "isSealed": undefined,
+         "rehydratePriority": undefined,
+         "lastAccessedOn": undefined,
+         "immutabilityPolicyExpiresOn": undefined,
+         "immutabilityPolicyMode": undefined,
+         "legalHold": undefined
+      },
+      "metadata": undefined,
+      "blobTags": undefined,
+      "objectReplicationMetadata": undefined,
+      "hasVersionsOnly": undefined,
+      "tags": undefined,
+      "objectReplicationSourceProperties": undefined,
+      "path": "test/test2.txt"
+   },
+   {
+      "name": "test3.txt",
+      "deleted": undefined,
+      "snapshot": undefined,
+      "versionId": undefined,
+      "isCurrentVersion": undefined,
+      "properties": {
+         "createdOn": "2026-01-27T17:30:22.000Z",
+         "lastModified": "2026-01-27T17:30:22.000Z",
+         "etag": "0x1D4075348288960",
+         "contentLength": 27,
+         "contentType": "application/octet-stream",
+         "contentEncoding": undefined,
+         "contentLanguage": undefined,
+         "contentMD5": "<Buffer 3e ce 5d f1 05 b7 e4 0d c2 57 72 4e 80 d1 25 bb>",
+         "contentDisposition": undefined,
+         "cacheControl": undefined,
+         "blobSequenceNumber": undefined,
+         "blobType": "BlockBlob",
+         "leaseStatus": "unlocked",
+         "leaseState": "available",
+         "leaseDuration": undefined,
+         "copyId": undefined,
+         "copyStatus": undefined,
+         "copySource": undefined,
+         "copyProgress": undefined,
+         "copyCompletedOn": undefined,
+         "copyStatusDescription": undefined,
+         "serverEncrypted": true,
+         "incrementalCopy": undefined,
+         "destinationSnapshot": undefined,
+         "deletedOn": undefined,
+         "remainingRetentionDays": undefined,
+         "accessTier": "Hot",
+         "accessTierInferred": true,
+         "archiveStatus": undefined,
+         "customerProvidedKeySha256": undefined,
+         "encryptionScope": undefined,
+         "accessTierChangedOn": "2026-01-27T17:30:22.000Z",
+         "tagCount": undefined,
+         "expiresOn": undefined,
+         "isSealed": undefined,
+         "rehydratePriority": undefined,
+         "lastAccessedOn": undefined,
+         "immutabilityPolicyExpiresOn": undefined,
+         "immutabilityPolicyMode": undefined,
+         "legalHold": undefined
+      },
+      "metadata": undefined,
+      "blobTags": undefined,
+      "objectReplicationMetadata": undefined,
+      "hasVersionsOnly": undefined,
+      "tags": undefined,
+      "objectReplicationSourceProperties": undefined,
+      "path": "test/folder1/test3.txt"
+   }
 ]
 ```
 
 ### Get
+
 Get one or more blobs with its data
-``` javascript
+
+``` TypeScript
 // Gets a blob with name/path test.txt
-await blobClient.get('test.txt')
+await blobStorageClient.get('test.txt')
 
 // Yields
 {
@@ -93,10 +249,8 @@ await blobClient.get('test.txt')
   data: 'testdata'
 }
 
-```
-``` javascript
 // Gets a blob with name/path test.txt
-await blobClient.get('test/')
+await blobStorageClient.get('test/')
 
 // Yields
 [
@@ -120,12 +274,12 @@ await blobClient.get('test/')
 ```
 
 #### Specify encoding of return value
-If you for example need `get` to return base64 instead of a bufferstring, you can specify encoding in the options-parameter.
+If you for example need `get` to return base64 instead of a buffer string, you can specify encoding.
 
 See valid encodings in [NodeJs official documentation](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) 
-```js
+```TypeScript
 // Gets a blob with name/path test.pdf and returns the content as a base64 string
-await blobClient.get('test.pdf', { encoding: 'base64' })
+await blobStorageClient.get('test.pdf', 'base64')
 
 // Yields
 const result = {
@@ -137,45 +291,50 @@ const result = {
 
 ```
 
+### Move
+
+Moves one blob from sourcePath to destinationPath
+
+``` TypeScript
+// Moves the blob from test.txt to moved/test.txt
+await blobStorageClient.move('test.txt', 'moved/test.txt');
+
+// Yields
+'moved/test.txt'
+```
+
 ### Remove
-Removes one or more blobs patching the provided path
-``` javascript
+
+Removes one or more blobs matching the provided path
+
+``` TypeScript
 // Removes the blob with path test.txt
-await blobClient.remove('test.txt');
+await blobStorageClient.remove('test.txt');
 
 // Yields
 [ 'test.txt' ]
-```
-``` javascript
+
 // Removes all blobs starting with test
-await blobClient.remove('test');
+await blobStorageClient.remove('test');
 
 // Yields
 [ 'test/test2.txt', 'test/folder1/test3.txt' ]
+
+// Removes all blobs starting with test except test3.txt
+await blobStorageClient.remove('test', ['test3.txt']);
+
+// Yields
+[ 'test/test2.txt' ]
 ```
 
-### createBlobServiceClient
-Creates and returns a BlobServiceClient for working with lower-level API
-``` javascript
-// Create the client
-const client = await blobClient.createBlobServiceClient();
-```
+### BlobServiceClient
 
-### createContainerClient
-Creates and returns a ContainerClient for working with lower-level API
-``` javascript
-// Create the client
-const client = await blobClient.createContainerClient();
-```
+If you need to work with lower-level API's you can create a BlobServiceClient and/or ContainerClient yourself.
 
-### Other
-All functions takes in an optional options object
-``` javascript
-// Create the options object
-const options = {
-  connectionString: 'Azure storage account connection string',
-  containerName: 'Azure storage account container name '
-}
-// Get blobs with provided options
-await blobClient.get('test.txt', options);
+``` TypeScript
+// Create the BlobServiceClient
+const blobServiceClient: BlobServiceClient = new BlobServiceClient(...);
+
+// Create the ContainerClient
+const containerClient: ContainerClient = new ContainerClient(...);
 ```
